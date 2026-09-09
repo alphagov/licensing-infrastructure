@@ -7,6 +7,8 @@ terraform {
   }
 
   required_version = "~> 1.16.1"
+
+  backend "local" {}
 }
 
 provider "aws" {
