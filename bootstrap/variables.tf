@@ -3,9 +3,9 @@ variable "environment" {
   description = "The name of this environment. This name should be unique among all environments in use"
 }
 
-variable "engineer_email_addresses" {
+variable "engineer_usernames" {
   type        = list(string)
-  description = "A list of email addresses to grant engineer access to"
+  description = "A list of usernames (part of cabinet office digital email before the @) to grant engineer access to"
 }
 
 variable "base_user_account_id" {

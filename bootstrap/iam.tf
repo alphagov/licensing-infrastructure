@@ -1,5 +1,7 @@
-locals {
-  engineer_assume_role_policy = {
+resource "aws_iam_role" "admin" {
+  for_each = toset(var.engineer_usernames)
+  name     = "${each.value}-admin"
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -15,28 +17,43 @@ locals {
           }
         }
         Principal = {
-          AWS = [for email in var.engineer_email_addresses :
-            "arn:aws:iam::${var.base_user_account_id}:user/${email}"
-          ]
+          AWS = ["arn:aws:iam::${var.base_user_account_id}:user/${each.value}@digital.cabinet-office.gov.uk"]
         }
       }
     ]
-  }
-}
-
-resource "aws_iam_role" "admin" {
-  name               = "Admin"
-  assume_role_policy = jsonencode(local.engineer_assume_role_policy)
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "allow_admin" {
-  role       = aws_iam_role.admin.name
+  for_each   = aws_iam_role.admin
+  role       = each.value.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "aws_iam_role" "power_user" {
-  name               = "PowerUser"
-  assume_role_policy = jsonencode(local.engineer_assume_role_policy)
+  for_each = toset(var.engineer_usernames)
+  name     = "${each.value}-power-user"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowEngineerAssumeRole"
+        Condition = {
+          Bool = {
+            "aws:MultiFactorAuthPresent" : "true"
+          },
+          IpAddress = {
+            "aws:SourceIp" : var.engineer_allowed_ip_ranges
+          }
+        }
+        Principal = {
+          AWS = ["arn:aws:iam::${var.base_user_account_id}:user/${each.value}@digital.cabinet-office.gov.uk"]
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_iam_policy" "power_user_access" {
@@ -75,16 +92,39 @@ resource "aws_iam_policy" "power_user_access" {
 }
 
 resource "aws_iam_role_policy_attachment" "power_user_access" {
-  role       = aws_iam_role.power_user.name
+  for_each   = aws_iam_role.power_user
+  role       = each.value.name
   policy_arn = aws_iam_policy.power_user_access.arn
 }
 
 resource "aws_iam_role" "read_only" {
-  name               = "ReadOnly"
-  assume_role_policy = jsonencode(local.engineer_assume_role_policy)
+  for_each = toset(var.engineer_usernames)
+  name     = "${each.value}-readonly"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "AllowEngineerAssumeRole"
+        Condition = {
+          Bool = {
+            "aws:MultiFactorAuthPresent" : "true"
+          },
+          IpAddress = {
+            "aws:SourceIp" : var.engineer_allowed_ip_ranges
+          }
+        }
+        Principal = {
+          AWS = ["arn:aws:iam::${var.base_user_account_id}:user/${each.value}@digital.cabinet-office.gov.uk"]
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "allow_engineer_read_only_access" {
-  role       = aws_iam_role.read_only.name
+  for_each   = aws_iam_role.read_only
+  role       = each.value.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
