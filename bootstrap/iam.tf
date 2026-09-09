@@ -24,13 +24,13 @@ locals {
   }
 }
 
-resource "aws_iam_role" "full_access" {
-  name               = "FullAccess"
+resource "aws_iam_role" "admin" {
+  name               = "Admin"
   assume_role_policy = jsonencode(local.engineer_assume_role_policy)
 }
 
-resource "aws_iam_role_policy_attachment" "allow_full_access" {
-  role       = aws_iam_role.full_access.name
+resource "aws_iam_role_policy_attachment" "allow_admin" {
+  role       = aws_iam_role.admin.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
