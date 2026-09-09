@@ -15,4 +15,3 @@ source_profile = gds-users
 [profile production-bootstrap]
 role_arn = arn:aws:iam::PRODUCTION_ACCOUNT_ID:role/bootstrap
 source_profile = gds-users
-

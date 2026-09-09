@@ -14,6 +14,10 @@ This repository uses [mise](https://mise.jdx.dev/) to manage tool versions and e
 
 After installing mise, you should set up your shell to automatically activate mise following [these instructions](https://mise.jdx.dev/installing-mise.html#shell-specific-installation-activation), then run `mise install` and `mise trust`.
 
+## Development tools
+
+Run `make prepare` to install the pre-commit hooks configured for this repository
+
 # Deploying
 
 ## Bootstrap
