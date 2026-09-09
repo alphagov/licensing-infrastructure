@@ -29,6 +29,18 @@ You should only need to deploy the bootstrap to initialise the AWS account, or r
 * Fill in the values of `bootstrap-secrets.tfvars.template` in the root directory and move it to the `bootstrap` directory. You can name this file `secrets.auto.tfvars` to have the values automatically applied. A pre-filled copy can be found in the teams shared storage account under "Engineering/Infrastructure".
 * If the account has already been bootstrapped and contains some/all of the bootstrap resources, check the "Engineering/Infrastructure" cloud storage folder for the most recent tfstate file. If it's there, copy it to `terraform.tfstate` in the `bootstrap/` directory. If it's not and bootstrap resources exist, you will need to import these manually using `terraform import <...>` for each resource.
 * Ensure you are connected to the VPN. The bootstrap role is IP restricted and will not work otherwise.
-* Run `aws-vault exec {ACCOUNT}-bootstrap -- terraform plan -var-file {ACCOUNT}.tfvars -out {ACCOUNT}.tfplan` to generate a plan, substituting the account name (development, staging or production) for "{ACCOUNT}". Review this plan to ensure the changes are sensible (you can run `terraform show {ACCOUNT}.tfplan` to view the changes again)
-* Run `aws-vault exec {ACCOUNT}-bootstrap -- terraform apply -var-file {ACCOUNT}.tfvars {ACCOUNT}.tfplan` when you're happy with the plan.
+* Run `aws-vault exec <ACCOUNT>-bootstrap -- terraform plan -var-file <ACCOUNT>.tfvars -out <ACCOUNT>.tfplan` to generate a plan, substituting the account name (development, staging or production) for "<ACCOUNT>". Review this plan to ensure the changes are sensible (you can run `terraform show <ACCOUNT>.tfplan` to view the changes again).
+* Run `aws-vault exec <ACCOUNT>-bootstrap -- terraform apply -var-file <ACCOUNT>.tfvars <ACCOUNT>.tfplan` when you're happy with the plan.
 * Copy the latest tfstate (`bootstrap/terraform.tfstate`) to the shared storage account infrastructure folder.
+
+## Terraform
+
+To deploy the main terraform:
+
+* Navigate to the `terraform/` directory.
+* Ensure you are connected to the VPN. The engineer roles are IP restricted and will not work otherwise.
+* Run `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform init -reconfigure -backend-config <ACCOUNT>.state.config` to target a different AWS account, replacing "<ACCOUNT> with either development, staging or production. You will need to run this again to target a different account.
+* Ensure you are targeting the correct terraform workspace. For the development account, you can create and destroy your own ad-hoc workspaces as you please. For the staging and production accounts, only the default workspace should be used.
+* Plan the changes with `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform plan -vars-file <ACCOUNT>.tfvars -out <ACCOUNT>.tfplan`.
+* Review this plan to ensure the changes are sensible (you can run `terraform show <ACCOUNT>.tfplan` to view the changes again).
+* Run `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform apply -var-file <ACCOUNT>.tfvars <ACCOUNT>.tfplan` when you're happy with the plan.
