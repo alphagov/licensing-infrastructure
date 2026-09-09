@@ -18,8 +18,10 @@ provider "aws" {
     tags = {
       Environment     = var.environment
       EnvironmentType = var.environment_type
-      Stack           = "bootstrap"
-      Application     = "GOV.UK Licensing"
+      Component       = "bootstrap"
+      Product         = "GOV.UK Licensing"
+      Owner           = "made-tech-licensify@digital.cabinet-office.gov.uk"
+      Source          = "https://github.com/alphagov/licensing-infrastructure"
     }
   }
 }
