@@ -17,7 +17,7 @@ provider "aws" {
   default_tags {
     tags = {
       Environment     = var.environment
-      EnvironmentType = var.environment_type
+      EnvironmentType = var.environment
       Component       = "bootstrap"
       Product         = "GOV.UK Licensing"
       Owner           = "made-tech-licensify@digital.cabinet-office.gov.uk"

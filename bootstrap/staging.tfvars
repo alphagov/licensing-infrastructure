@@ -1,2 +1,1 @@
-environment      = "staging"
-environment_type = "staging"
+environment = "staging"

@@ -3,11 +3,6 @@ variable "environment" {
   description = "The name of this environment. This name should be unique among all environments in use"
 }
 
-variable "environment_type" {
-  type        = string
-  description = "The type of environment (development, staging or production)"
-}
-
 variable "engineer_email_addresses" {
   type        = list(string)
   description = "A list of email addresses to grant engineer access to"

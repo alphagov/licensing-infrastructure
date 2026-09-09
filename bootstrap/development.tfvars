@@ -1,2 +1,1 @@
-environment      = "development"
-environment_type = "development"
+environment = "development"
