@@ -1,0 +1,17 @@
+[default]
+region = eu-west-2
+mfa_serial = TOTP_MFA_SERIAL
+
+[profile gds-users]
+
+[profile development-bootstrap]
+role_arn = arn:aws:iam::DEVELOPMENT_ACCOUNT_ID:role/bootstrap
+source_profile = gds-users
+
+[profile staging-bootstrap]
+role_arn = arn:aws:iam::STAGING_ACCOUNT_ID:role/bootstrap
+source_profile = gds-users
+
+[profile production-bootstrap]
+role_arn = arn:aws:iam::PRODUCTION_ACCOUNT_ID:role/bootstrap
+source_profile = gds-users
