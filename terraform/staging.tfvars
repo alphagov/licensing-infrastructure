@@ -1,2 +1,7 @@
 environment      = "staging"
 environment_type = "staging"
+availability_zones = [
+  "eu-west-2a",
+  "eu-west-2b",
+  "eu-west-2c"
+]
