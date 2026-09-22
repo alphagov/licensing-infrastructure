@@ -30,7 +30,7 @@ resource "aws_s3_bucket_public_access_block" "block_public_terraform_state" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "example" {
+resource "aws_s3_bucket_ownership_controls" "state" {
   bucket = aws_s3_bucket.terraform_state.id
 
   rule {
