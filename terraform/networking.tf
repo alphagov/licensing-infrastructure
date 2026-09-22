@@ -19,10 +19,11 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_gw" {
-  domain = "vpc"
+  for_each = toset(var.availability_zones)
+  domain   = "vpc"
 
   tags = {
-    Name = "nat-gw-${local.environment_name}"
+    Name = "nat-gw-${local.environment_name}-${each.value}"
   }
 }
 
@@ -30,6 +31,15 @@ resource "aws_nat_gateway" "nat_gw" {
   vpc_id            = aws_vpc.main.id
   availability_mode = "regional"
   connectivity_type = "public"
+
+  dynamic "availability_zone_address" {
+    for_each = toset(var.availability_zones)
+    iterator = zone
+    content {
+      allocation_ids    = [aws_eip.nat_gw[zone.key].id]
+      availability_zone = zone.value
+    }
+  }
 
   depends_on = [aws_internet_gateway.igw]
 
