@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "db_backups" {
-  bucket = "govuk-licensing-${var.environment}-db-backups"
+  bucket = "govuk-licensing-${local.environment_name}-db-backups"
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "db_backups" {

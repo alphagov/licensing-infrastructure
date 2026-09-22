@@ -1,4 +1,3 @@
-environment      = "staging"
 environment_type = "staging"
 availability_zones = [
   "eu-west-2a",
