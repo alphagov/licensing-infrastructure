@@ -21,7 +21,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment     = var.environment
+      Environment     = local.environment_name
       EnvironmentType = var.environment_type
       Component       = "infrastructure"
       Product         = "GOV.UK Licensing"
