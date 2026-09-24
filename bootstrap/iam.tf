@@ -69,7 +69,8 @@ resource "aws_iam_policy" "power_user_access" {
         NotAction = [
           "iam:*",
           "organizations:*",
-          "account:*"
+          "account:*",
+          "ec2:ReleaseAddress"
         ]
         Resource = "*"
       },

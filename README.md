@@ -39,8 +39,8 @@ To deploy the main terraform:
 
 * Navigate to the `terraform/` directory.
 * Ensure you are connected to the VPN. The engineer roles are IP restricted and will not work otherwise.
-* Run `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform init -reconfigure -backend-config <ACCOUNT>.state.config` to target a different AWS account, replacing "<ACCOUNT> with either development, staging or production. You will need to run this again to target a different account.
+* Run `gds aws govuk-licensing-<ACCOUNT>-power-user -- terraform init -reconfigure -backend-config <ACCOUNT>.state.config` to target a different AWS account, replacing "<ACCOUNT> with either development, staging or production. You will need to run this again to target a different account.
 * Ensure you are targeting the correct terraform workspace. For the development account, you can create and destroy your own ad-hoc workspaces as you please. For the staging and production accounts, only the default workspace should be used.
-* Plan the changes with `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform plan -vars-file <ACCOUNT>.tfvars -out <ACCOUNT>.tfplan`.
+* Plan the changes with `gds aws govuk-licensing-<ACCOUNT>-power-user -- terraform plan -vars-file <ACCOUNT>.tfvars -out <ACCOUNT>.tfplan`.
 * Review this plan to ensure the changes are sensible (you can run `terraform show <ACCOUNT>.tfplan` to view the changes again).
-* Run `gds aws govuk-licensing-<ACCOUNT>-admin -- terraform apply -var-file <ACCOUNT>.tfvars <ACCOUNT>.tfplan` when you're happy with the plan.
+* Run `gds aws govuk-licensing-<ACCOUNT>-power-user -- terraform apply -var-file <ACCOUNT>.tfvars <ACCOUNT>.tfplan` when you're happy with the plan.
